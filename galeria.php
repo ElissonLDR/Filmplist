@@ -6,33 +6,6 @@ $bd = new SQLite3("filmes.db");
 $sql = "SELECT * FROM filmes";
 $filmes = $bd -> query($sql);
 
-$filme1 = [
-    "titulo" => "Vingadores",
-    "nota" => 9.7,
-    "sinopse" => "Loki, o irmão de Thor, ganha acesso ao poder ilimitado do cubo cósmico ao roubá-lo de dentro das instalações da S.H.I.E.L.D. Nick Fury, o diretor desta agência internacional que mantém a paz, logo reúne os únicos super-heróis que serão capazes de defender a Terra de ameaças sem precedentes. Homem de Ferro, Capitão América, Hulk, Thor, Viúva Negra e Gavião Arqueiro formam o time dos sonhos de Fury, mas eles precisam aprender a colocar os egos de lado e agir como um grupo em prol da humanidade.",
-    "poster" => "https://www.themoviedb.org/t/p/w300/u49fzmIJHkb1H4oGFTXtBGgaUS1.jpg"
-];
-$filme2 = [
-    "titulo" => "Homem-Aranha: Sem Volta Para Casa",
-    "nota" => 8.7,
-    "sinopse" => "Peter Parker é desmascarado e não consegue mais separar sua vida normal dos grandes riscos de ser um super-herói. Quando ele pede ajuda ao Doutor Estranho, os riscos se tornam ainda mais perigosos, e o forçam a descobrir o que realmente significa ser o Homem-Aranha.",
-    "poster" => "https://www.themoviedb.org/t/p/w300/fVzXp3NwovUlLe7fvoRynCmBPNc.jpg"
-];
-$filme3 = [
-    "titulo" => "Matrix Resurrections",
-    "nota" => 6.5,
-    "sinopse" => "Em um mundo de duas realidades — a vida cotidiana e o que está por trás dela —, Thomas Anderson terá que escolher seguir o coelho branco mais uma vez. A escolha, embora seja uma ilusão, ainda é a única maneira de entrar ou sair da Matrix, que é mais forte, mais segura e mais perigosa do que nunca.",
-    "poster" => "https://www.themoviedb.org/t/p/w300/9DT4WVqZqBEI9Kub18gZ3m1D89m.jpg"
-];
-$filme4 = [
-    "titulo" => "Batman",
-    "nota" => 9.2,
-    "sinopse" => "Bruce Wayne é um jovem bilionário da cidade de Gotham City, Nova Jersey, que também age secretamente como o vigilante noturno Batman após o assassinato dos seus pais.",
-    "poster" => "https://www.themoviedb.org/t/p/original/2cS4LrgSdkoA59GbJccuGo9iaPb.jpg"
-];
- 
-//$filmes = [$filme1, $filme2, $filme3, $filme4];
-
 ?>
 
 <body>
@@ -57,12 +30,13 @@ $filme4 = [
             </ul>
         </div>
     </nav>
-
+<div class="container">
+    
     <div class="row">
 
         <?php while ($filme = $filmes -> fetchArray()) : ?>
             
-            <div class="col s3">
+            <div class="col s12 m6 l3">
                 <div class="card hoverable ">
                     <div class="card-image">
                         <img src="<?= $filme["poster"]?>">
@@ -79,5 +53,16 @@ $filme4 = [
         <?php endwhile ?>
 
     </div>
+    
+</div>
 </body>
+
+<?php if (isset($_GET["msg"])) : ?>
+<script>
+    M.toast({
+        html: '<?= $_GET["msg"]?>'
+    });
+</script>
+<?php endif ?>
+
 </html>
