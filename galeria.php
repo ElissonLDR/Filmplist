@@ -2,9 +2,13 @@
 
 <?php
 
-$bd = new SQLite3("filmes.db");
-$sql = "SELECT * FROM filmes";
-$filmes = $bd -> query($sql);
+session_start();
+
+require "./util/Mensagem.php";
+require "./repository/FilmesRepositoryPDO.php";
+
+$filmesRepository = new FilmesRepositoryPDO();
+$filmes = $filmesRepository->ListarTodos();
 
 ?>
 
@@ -13,8 +17,8 @@ $filmes = $bd -> query($sql);
 
         <div class="nav-wrapper">
             <ul id="nav-mobile" class="right">
-                <li class="active"><a href="galeria.php">Galeria</a></li>
-                <li><a href="cadastrar.php">Cadastrar</a></li>
+                <li class="active"><a href="/">Galeria</a></li>
+                <li><a href="/novo">Cadastrar</a></li>
             </ul>
         </div>
 
@@ -34,35 +38,31 @@ $filmes = $bd -> query($sql);
     
     <div class="row">
 
-        <?php while ($filme = $filmes -> fetchArray()) : ?>
+        <?php foreach($filmes as $filme) : ?>
             
             <div class="col s12 m6 l3">
                 <div class="card hoverable ">
                     <div class="card-image">
-                        <img src="<?= $filme["poster"]?>">
+                        <img src="<?= $filme->poster?>">
                         <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">favorite_border</i></a>
                     </div>
                     <div class="card-content">
-                        <p class="valign-wrapper"><i class="material-icons amber-text">star</i> <?= $filme["nota"]?></p>
-                        <span class="card-title"><?= $filme["titulo"]?></span>
-                        <p><?= $filme["sinopse"]?></p>
+                        <p class="valign-wrapper"><i class="material-icons amber-text">star</i> <?= $filme->nota?></p>
+                        <span class="card-title"><?= $filme->titulo?></span>
+                        <p><?= $filme->sinopse?></p>
                     </div>
                 </div>
             </div>
             
-        <?php endwhile ?>
+        <?php endforeach ?>
 
     </div>
     
 </div>
+
+<?php Mensagem::mostrar(); ?>
+
 </body>
 
-<?php if (isset($_GET["msg"])) : ?>
-<script>
-    M.toast({
-        html: '<?= $_GET["msg"]?>'
-    });
-</script>
-<?php endif ?>
 
 </html>

@@ -1,26 +1,21 @@
 <?php
 
-$bd = new SQLite3("filmes.db");
+session_start();
+require "./repository/FilmesRepositoryPDO.php";
+require "./model/Filmes.php";
 
-$titulo = $bd->escapeString($_POST["titulo"]);
-$sinopse = $bd->escapeString($_POST["sinopse"]);
-$nota = $bd->escapeString($_POST["nota"]);
-$poster = $bd->escapeString($_POST["poster"]);
+$filmesRepository = new FilmesRepositoryPDO();
+$filme = new Filme();
 
-$sql = "INSERT INTO filmes (titulo, poster, sinopse, nota) 
-VALUES (:titulo,:poster,:sinopse,:nota)";
+$titulo =  $_POST["titulo"];
+$sinopse = $_POST["sinopse"];
+$nota =    $_POST["nota"];
+$poster =  $_POST["poster"];
 
-$stmt = $bd -> prepare($sql);
-$stmt -> bindValue(':titulo', $titulo, SQLITE3_TEXT);
-$stmt -> bindValue(':poster', $poster, SQLITE3_TEXT);
-$stmt -> bindValue(':sinopse', $sinopse, SQLITE3_TEXT);
-$stmt -> bindValue(':nota', $nota, SQLITE3_FLOAT);
-
-
-if ($stmt->execute())
-    echo "\nfilmes inseridos com sucesso\n";
+if ($filmesRepository->salvar($filme))
+    $_SESSION["msg"] = "Filme cadastrado com sucesso";
 else
-    echo "\nerro ao inserir filmes. ". $bd ->lastErrorMsg();
+    $_SESSION["msg"] = "Erro ao cadastrar o filme";
     
-header("location: galeria.php?msg=Filme+cadastrado+com+sucesso");
+header("location: /");
 ?>
